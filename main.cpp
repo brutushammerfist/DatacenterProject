@@ -26,5 +26,7 @@ int main(int argc, char** argv) {
         }
     }
 
+    std::cout << "Simulation complete!\n";
+
     return 0;
 }

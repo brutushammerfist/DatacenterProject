@@ -24,20 +24,6 @@ bool AccessPoint::isFull() {
     return true;
 }
 
-/*void AccessPoint::initializeParkingLot(std::list<Vehicle*> & vehicles) {
-    std::list<Vehicle*>::iterator vitr = vehicles.begin();
-}
-
-void AccessPoint::fillVehicles(std::list<Vehicle*> &vehicles) {
-    for (int i = 0; i < 40; i++) {
-        if (this->cluster[i] == nullptr) {
-            this->cluster[i] = vehicles.front();
-            vehicles.pop_front();
-            //vehicles.push_back(this->cluster[i]);
-        }
-    }
-}*/
-
 void AccessPoint::initializeParkingLot(std::list<Vehicle*> &vehicles) {
     std::list<Vehicle*>::iterator vitr = vehicles.begin();
 
