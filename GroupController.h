@@ -8,4 +8,14 @@ class GroupController {
     public:
         GroupController();
         ~GroupController();
+
+        bool isFull();
+
+        void initializeParkingLot(std::list<Vehicle*> &vehicles);
+
+        void fillVehicles(int shiftToReplace, std::list<Vehicle*> & vehicles);
+
+        void display();
+
+        void shiftChange(int shiftToReplace, std::list<Vehicle*> &vehicles);
 };

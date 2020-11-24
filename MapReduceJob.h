@@ -1,16 +1,22 @@
 #pragma once
 
-using namespace std;
-
 #include <random>
+#include <list>
+
+#include "Vehicle.h"
+
+class Vehicle;
 
 class MapReduceJob {
     private:
-        default_random_engine generator;
+        int id;
+        std::default_random_engine generator;
         int inputSize;
         int intermediateDataSize;
+        int estimatedCompletionTime;
         int completionTime;
         bool isComplete;
+        std::list<Vehicle*> repositories;
     public:
         MapReduceJob();
         ~MapReduceJob();

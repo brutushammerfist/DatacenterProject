@@ -2,9 +2,11 @@
 
 #include "MapReduceJob.h"
 
+class MapReduceJob;
+
 class VirtualMachine {
     private:
-        MapReduceJob job;
+        MapReduceJob* job;
         int size;
     public:
         VirtualMachine();
