@@ -20,6 +20,8 @@ int main(int argc, char** argv) {
         time += 1;
 
         //std::cout << time << "\n";
+
+        dcController.work();
         
         if (time % 3600 == 0) {
             dcController.shiftChange();

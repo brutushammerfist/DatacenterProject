@@ -55,13 +55,9 @@ void DatacenterController::display() {
 
 // Make a shift change, swapping 320 vehicles currently in the datacenter with fresh vehicles
 void DatacenterController::shiftChange() {
-    std::cout << "Changing shifts! Shift " << this->shiftToReplace << " is leaving!\n";
-    
     for (int i = 0; i < 4; i++) {
         this->regions[i].shiftChange(this->shiftToReplace, this->vehicles);
     }
-
-    std::cout << "Refilling emptied spots...\n";
 
     this->fillVehicles();
     
@@ -70,6 +66,17 @@ void DatacenterController::shiftChange() {
     } else {
         this->shiftToReplace++;
     }
+}
 
-    std::cout<< "Shift " << this->shiftToReplace << " is the next to leave!\n";
+void DatacenterController::work() {
+    for (int i = 0; i < 4; i++) {
+        this->regions[i].work();
+    }
+}
+
+Vehicle* DatacenterController::getRandomVehicle() {
+    std::default_random_engine generator;
+    std::uniform_int_distribution<int> random(0, 3);
+
+    return this->regions[random(generator)].getRandomVehicle();
 }

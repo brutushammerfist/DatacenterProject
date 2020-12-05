@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GroupController.h"
+#include "Vehicle.h"
 
 class RegionController {
     private:
@@ -18,4 +19,8 @@ class RegionController {
         void display();
 
         void shiftChange(int shiftToReplace, std::list<Vehicle*> &vehicles);
+
+        void work();
+
+        Vehicle* getRandomVehicle();
 };

@@ -2,6 +2,7 @@
 
 #include <list>
 
+#include "JobManager.h"
 #include "RegionController.h"
 
 class DatacenterController {
@@ -9,6 +10,8 @@ class DatacenterController {
         RegionController regions[4];
         std::list<Vehicle*> vehicles;
         int shiftToReplace;
+
+        JobManager jobManager;
     public:
         DatacenterController();
         ~DatacenterController();
@@ -22,4 +25,8 @@ class DatacenterController {
         void display();
 
         void shiftChange();
+
+        void work();
+
+        Vehicle* getRandomVehicle();
 };

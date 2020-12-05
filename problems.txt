@@ -1,3 +1,5 @@
 Time? Should I be using a timestep to simulate the passage of time or be using real time?
 
 Shift management! Decided to break vehicles into shifts, according to their ID.
+
+Overcomplicating the network...had to scrap original and restart.

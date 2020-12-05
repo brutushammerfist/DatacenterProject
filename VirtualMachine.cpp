@@ -9,3 +9,9 @@ VirtualMachine::VirtualMachine() {
 VirtualMachine::~VirtualMachine() {
 
 }
+
+void VirtualMachine::work() {
+    if (this->job != nullptr) {
+        this->job->work();
+    }
+}

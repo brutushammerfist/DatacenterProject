@@ -48,3 +48,16 @@ void RegionController::shiftChange(int shiftToReplace, std::list<Vehicle*> &vehi
         this->groups[i].shiftChange(shiftToReplace, vehicles);
     }
 }
+
+void RegionController::work() {
+    for (int i = 0; i < 4; i++) {
+        this->groups[i].work();
+    }
+}
+
+Vehicle* RegionController::getRandomVehicle() {
+    std::default_random_engine generator;
+    std::uniform_int_distribution<int> random(0, 3);
+
+    return this->groups[random(generator)].getRandomVehicle();
+}

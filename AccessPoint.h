@@ -5,6 +5,8 @@
 class AccessPoint {
     private:
         Vehicle* cluster[40];
+
+        Vehicle* bandwidthUser;
     public:
         AccessPoint();
         ~AccessPoint();
@@ -18,4 +20,10 @@ class AccessPoint {
         void display();
 
         void shiftChange(int shiftToReplace, std::list<Vehicle*> &vehicles);
+
+        Vehicle* getBandwidthUser();
+
+        void work();
+
+        Vehicle* getRandomVehicle();
 };

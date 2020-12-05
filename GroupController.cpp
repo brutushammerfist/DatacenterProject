@@ -22,13 +22,13 @@ bool GroupController::isFull() {
     return true;
 }
 
-void GroupController::initializeParkingLot(std::list<Vehicle*> & vehicles) {
+void GroupController::initializeParkingLot(std::list<Vehicle*> &vehicles) {
     for (int i = 0; i < 4; i++) {
         this->accessPoints[i].initializeParkingLot(vehicles);
     }
 }
 
-void GroupController::fillVehicles(int shiftToReplace, std::list<Vehicle*> & vehicles) {
+void GroupController::fillVehicles(int shiftToReplace, std::list<Vehicle*> &vehicles) {
     for(int i = 0; i < 4; i++) {
         if (!this->accessPoints[i].isFull()) {
             this->accessPoints[i].fillVehicles(shiftToReplace, vehicles);
@@ -46,4 +46,17 @@ void GroupController::shiftChange(int shiftToReplace, std::list<Vehicle*> &vehic
     for (int i = 0; i < 4; i++) {
         this->accessPoints[i].shiftChange(shiftToReplace, vehicles);
     }
+}
+
+void GroupController::work() {
+    for (int i = 0; i < 4; i++) {
+        this->accessPoints[i].work();
+    }
+}
+
+Vehicle* GroupController::getRandomVehicle() {
+    std::default_random_engine generator;
+    std::uniform_int_distribution<int> random(0, 3);
+
+    return this->accessPoints[random(generator)].getRandomVehicle();
 }

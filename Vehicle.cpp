@@ -22,9 +22,15 @@ Vehicle::~Vehicle() {
 }
 
 void Vehicle::display() {
-    std::cout << "ID: " << this->id % 24 << "\n";
+    std::cout << "ID: " << this->id << "\n";
 }
 
 int Vehicle::getShift() {
     return this->id % 24;
+}
+
+void Vehicle::work() {
+    if (this->vm != nullptr) {
+        this->vm->work();
+    }
 }

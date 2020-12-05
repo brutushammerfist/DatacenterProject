@@ -1,4 +1,5 @@
 #include <iostream>
+#include <random>
 
 #include "AccessPoint.h"
 
@@ -7,6 +8,8 @@ AccessPoint::AccessPoint() {
     for (int i = 0; i < 40; i++) {
         this->cluster[i] = nullptr;
     }
+
+    this->bandwidthUser = nullptr;
 }
 
 // Default Destructor
@@ -73,4 +76,21 @@ void AccessPoint::shiftChange(int shiftToReplace, std::list<Vehicle*> &vehicles)
             this->cluster[i] = nullptr;
         }
     }
+}
+
+Vehicle* AccessPoint::getBandwidthUser() {
+    return this->bandwidthUser;
+}
+
+void AccessPoint::work() {
+    for (int i = 0; i < 40; i++) {
+        this->cluster[i]->work();
+    }
+}
+
+Vehicle* AccessPoint::getRandomVehicle() {
+    std::default_random_engine generator;
+    std::uniform_int_distribution<int> random(0, 39);
+
+    return this->cluster[random(generator)];
 }

@@ -21,7 +21,7 @@ class Vehicle {
 
         void display();
 
-        void MigrateVM();
-
         int getShift();
+
+        void work();
 };
