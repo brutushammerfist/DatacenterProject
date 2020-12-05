@@ -1,14 +1,23 @@
 #pragma once
 
-#include <queue>
+#include <list>
 
 #include "MapReduceJob.h"
 
 class JobManager {
     private:
-        std::queue<MapReduceJob> jobQ;
-        int numSimulJobs;
+        std::list<MapReduceJob*> completedJobs;
+        std::list<MapReduceJob*> runningJobs;
+        int numReducers;
+        int nextID;
     public:
         JobManager();
+        JobManager(int numReducers);
         ~JobManager();
+
+        MapReduceJob* newJob();
+
+        void work();
+
+        void receiveUpload(SubJob* job);
 };
