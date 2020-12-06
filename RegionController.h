@@ -3,9 +3,12 @@
 #include "GroupController.h"
 #include "Vehicle.h"
 
+class DatacenterController;
+class GroupController;
+
 class RegionController {
     private:
-        GroupController groups[4];
+        GroupController* groups[4];
     public:
         RegionController();
         ~RegionController();
@@ -20,7 +23,7 @@ class RegionController {
 
         void shiftChange(int shiftToReplace, std::list<Vehicle*> &vehicles);
 
-        void work();
+        void work(DatacenterController* dcController, int time);
 
         Vehicle* getRandomVehicle();
 };

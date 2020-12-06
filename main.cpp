@@ -6,22 +6,19 @@
 /*
  * Command line arguments
  * argv[0] = ./datacenter.exe
- * argv[1] = 
+ * argv[1] = Number of weeks to run simulation
+ * argv[2] = Number of reducers to use(i.e. number of subjobs for the second phase of a job)
  */
 int main(int argc, char** argv) {
     DatacenterController dcController = DatacenterController();
 
-    const long endTime = 1209600; // Two weeks end time.
+    const long endTime = atoi(argv[1]) * 604800; // Two weeks end time.
     long time = 0;
-
-    //dcController.display();
 
     while (time < endTime) {
         time += 1;
 
-        //std::cout << time << "\n";
-
-        dcController.work();
+        dcController.work(time);
         
         if (time % 3600 == 0) {
             dcController.shiftChange();

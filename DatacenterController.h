@@ -5,16 +5,20 @@
 #include "JobManager.h"
 #include "RegionController.h"
 
+class RegionController;
+class JobManager;
+
 class DatacenterController {
     private:
-        RegionController regions[4];
+        RegionController* regions[4];
         std::list<Vehicle*> vehicles;
         int shiftToReplace;
 
-        JobManager jobManager;
+        JobManager* jobManager;
     public:
         DatacenterController();
         ~DatacenterController();
+        DatacenterController(int numReducers);
 
         bool isFull();
 
@@ -26,7 +30,9 @@ class DatacenterController {
 
         void shiftChange();
 
-        void work();
+        void work(int currTime);
 
-        Vehicle* getRandomVehicle();
+        Vehicle* getRandomVehicle(bool notBusy);
+
+        void scheduleReduce(MapReduceJob* job);
 };

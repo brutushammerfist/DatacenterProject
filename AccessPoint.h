@@ -1,11 +1,17 @@
 #pragma once
 
+#include <queue>
+
 #include "Vehicle.h"
+
+class DatacenterController;
+class Vehicle;
 
 class AccessPoint {
     private:
         Vehicle* cluster[40];
 
+        std::queue<Vehicle*> bandwidthQueue;
         Vehicle* bandwidthUser;
     public:
         AccessPoint();
@@ -23,7 +29,11 @@ class AccessPoint {
 
         Vehicle* getBandwidthUser();
 
-        void work();
+        void work(DatacenterController* dcController, int time);
 
         Vehicle* getRandomVehicle();
+
+        void swapBandwidthUser();
+
+        void addToBandwidthQueue(Vehicle* vehicle);
 };

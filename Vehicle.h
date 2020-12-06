@@ -2,10 +2,14 @@
 
 #include <list>
 
-#include "MapReduceJob.h"
+#include "AccessPoint.h"
+#include "SubJob.h"
 #include "VirtualMachine.h"
 
+class AccessPoint;
+class DatacenterController;
 class MapReduceJob;
+class SubJob;
 class VirtualMachine;
 
 class Vehicle {
@@ -14,6 +18,13 @@ class Vehicle {
         bool isBusy;
         VirtualMachine* vm;
         std::list<MapReduceJob*> savedJobs;
+
+        int arrival;
+        int departure;
+
+        int currMigrated;
+        bool migrating;
+        Vehicle* migrationTarget;
     public:
         Vehicle();
         Vehicle(int id);
@@ -23,5 +34,19 @@ class Vehicle {
 
         int getShift();
 
-        void work();
+        void work(DatacenterController* dcController, AccessPoint* acPoint, int time);
+
+        bool isMigrating();
+
+        void setJob(SubJob* job);
+
+        void setBusy(bool busy);
+
+        void saveJob(MapReduceJob* job);
+
+        bool busy();
+
+        void migrate();
+
+        void migrateVM(VirtualMachine* vm, std::list<MapReduceJob*> &jobs);
 };

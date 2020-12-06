@@ -16,7 +16,7 @@ MapReduceJob::MapReduceJob(int id, int numReducers) {
     std::uniform_int_distribution<int> completionTimeDistribution(3, 24);
     std::uniform_int_distribution<int> intermediateDataSizeDistribution(256, 1024);
     
-    this->mapJob = new SubJob(this, (int)(this->estimatedCompletionTime / 2) + 1, true);
+    this->mapJob = new SubJob(this, (int)(this->estimatedCompletionTime / 2) + 1, true, 500);
     
     this->id = id;
     this->numSubJobs = numReducers;
@@ -25,7 +25,7 @@ MapReduceJob::MapReduceJob(int id, int numReducers) {
     this->intermediateDataSize = intermediateDataSizeDistribution(this->generator);
 
     for (int i = 0; i < this->numSubJobs; i++) {
-        this->reduceJobs.push_back(new SubJob(this, (int)(this->estimatedCompletionTime / 2) + 1, false));
+        this->reduceJobs.push_back(new SubJob(this, (int)(this->estimatedCompletionTime / 2) + 1, false, this->intermediateDataSize));
         this->uploadedResults.push_back(0);
     }
 }
@@ -41,4 +41,16 @@ void MapReduceJob::addRepo(Vehicle* repo) {
 
 void MapReduceJob::removeRepo(Vehicle* repo) {
     this->repositories.remove(repo);
+}
+
+int MapReduceJob::getIntermediateSize() {
+    return this->intermediateDataSize;
+}
+
+SubJob* MapReduceJob::getFirstReduceJob() {
+    return this->reduceJobs.front();
+}
+
+std::list<SubJob*> MapReduceJob::getReduceJobs() {
+    return this->reduceJobs;
 }

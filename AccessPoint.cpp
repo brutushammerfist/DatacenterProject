@@ -82,9 +82,9 @@ Vehicle* AccessPoint::getBandwidthUser() {
     return this->bandwidthUser;
 }
 
-void AccessPoint::work() {
+void AccessPoint::work(DatacenterController* dcController, int time) {
     for (int i = 0; i < 40; i++) {
-        this->cluster[i]->work();
+        this->cluster[i]->work(dcController, this, time);
     }
 }
 
@@ -93,4 +93,13 @@ Vehicle* AccessPoint::getRandomVehicle() {
     std::uniform_int_distribution<int> random(0, 39);
 
     return this->cluster[random(generator)];
+}
+
+void AccessPoint::swapBandwidthUser() {
+    this->bandwidthUser = nullptr;
+    
+    if (!this->bandwidthQueue.empty()) {
+        this->bandwidthUser = this->bandwidthQueue.front();
+        this->bandwidthQueue.pop();
+    }
 }

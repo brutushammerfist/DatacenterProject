@@ -1,8 +1,12 @@
 #pragma once
 
-#include "MapReduceJob.h"
+#include "AccessPoint.h"
+#include "SubJob.h"
 
+class AccessPoint;
+class DatacenterController;
 class SubJob;
+class Vehicle;
 
 class VirtualMachine {
     private:
@@ -12,5 +16,9 @@ class VirtualMachine {
         VirtualMachine();
         ~VirtualMachine();
 
-        void work();
+        void work(DatacenterController* dcController, AccessPoint* acPoint, Vehicle* hostVehicle, int time);
+
+        void setJob(SubJob* job);
+
+        int migrateSize();
 };

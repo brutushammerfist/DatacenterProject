@@ -3,11 +3,10 @@
 #include <random>
 #include <list>
 
-#include "Vehicle.h"
 #include "SubJob.h"
 
-class Vehicle;
 class SubJob;
+class Vehicle;
 
 class MapReduceJob {
     private:
@@ -35,4 +34,10 @@ class MapReduceJob {
         void addRepo(Vehicle* repo);
 
         void removeRepo(Vehicle* repo);
+
+        int getIntermediateSize();
+
+        SubJob* getFirstReduceJob();
+
+        std::list<SubJob*> getReduceJobs();
 };

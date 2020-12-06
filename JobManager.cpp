@@ -6,6 +6,14 @@ JobManager::JobManager() {
 
 JobManager::JobManager(int numReducers) {
     this->numReducers = numReducers;
+
+    int numJobs = 1;
+
+    while ((double)((numJobs * numReducers) / 2560) < 0.8) {
+        numJobs++;
+    }
+
+    this->numSimulJobs = numJobs;
 }
 
 JobManager::~JobManager() {

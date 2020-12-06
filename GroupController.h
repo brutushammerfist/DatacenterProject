@@ -1,10 +1,14 @@
 #pragma once
 
 #include "AccessPoint.h"
+#include "Vehicle.h"
+
+class AccessPoint;
+class DatacenterController;
 
 class GroupController {
     private:
-        AccessPoint accessPoints[4];
+        AccessPoint* accessPoints[4];
     public:
         GroupController();
         ~GroupController();
@@ -19,7 +23,7 @@ class GroupController {
 
         void shiftChange(int shiftToReplace, std::list<Vehicle*> &vehicles);
 
-        void work();
+        void work(DatacenterController* dcController, int time);
 
         Vehicle* getRandomVehicle();
 };

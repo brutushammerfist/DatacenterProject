@@ -1,8 +1,10 @@
 #pragma once
 
-#include "MapReduceJob.h"
-#include "Vehicle.h"
+#include "AccessPoint.h"
+#include "DatacenterController.h"
 
+class AccessPoint;
+class DatacenterController;
 class MapReduceJob;
 
 class SubJob {
@@ -10,6 +12,12 @@ class SubJob {
         MapReduceJob* mainJob;
 
         bool map;
+        Vehicle* intermediateTargetOne;
+        int currTransferOne;
+        bool intermediateOneTransfered;
+        Vehicle* intermediateTargetTwo;
+        int currTransferTwo;
+        bool intermediateTwoTransfered;
 
         int inputSize;
         int currInputDownloaded;
@@ -18,14 +26,17 @@ class SubJob {
         int estimatedCompletionTime;
         int actualCompletionTime;
         int workingTimeToCompletion;
+        int currUploaded;
 
         bool workComplete;
         bool uploaded;
         bool complete;
     public:
         SubJob();
-        SubJob(MapReduceJob* mainJob, int estimated, bool map);
+        SubJob(MapReduceJob* mainJob, int estimated, bool map, int inputSize);
         ~SubJob();
 
-        void work();
+        void work(DatacenterController* dcController, AccessPoint* acPoint, Vehicle* hostVehicle, int time);
+
+        int getInputSize();
 };
