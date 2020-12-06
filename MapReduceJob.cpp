@@ -54,3 +54,7 @@ SubJob* MapReduceJob::getFirstReduceJob() {
 std::list<SubJob*> MapReduceJob::getReduceJobs() {
     return this->reduceJobs;
 }
+
+SubJob* MapReduceJob::getMapJob() {
+    return this->mapJob;
+}

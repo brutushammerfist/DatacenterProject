@@ -125,13 +125,6 @@ void SubJob::work(DatacenterController* dcController, AccessPoint* acPoint, Vehi
                 }
             }
         }
-
-        // Check if job is completely finished and uploaded
-        /*if (this->workComplete && this->uploaded) {
-            this->complete = true;
-            acPoint->swapBandwidthUser();
-            hostVehicle->setBusy(false);
-        }*/
     }
 }
 

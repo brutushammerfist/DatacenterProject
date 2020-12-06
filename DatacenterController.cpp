@@ -18,6 +18,8 @@ DatacenterController::DatacenterController() {
     this->shiftToReplace = 0;
 
     this->jobManager = new JobManager();
+
+    this->initializeJobs();
 }
 
 // Default Destructor
@@ -121,5 +123,14 @@ void DatacenterController::scheduleReduce(MapReduceJob* job) {
     while (jitr != jobs.end()) {
         this->getRandomVehicle(true)->setJob((*jitr));
         jitr++;
+    }
+}
+
+void DatacenterController::initializeJobs() {
+    MapReduceJob* job = nullptr;
+
+    for (int i = 0; i < this->jobManager->getNumSimulJobs(); i++) {
+        job = this->jobManager->newJob();
+        this->getRandomVehicle(true)->setJob(job->getMapJob());
     }
 }

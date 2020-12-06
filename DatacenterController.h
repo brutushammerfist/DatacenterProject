@@ -35,4 +35,6 @@ class DatacenterController {
         Vehicle* getRandomVehicle(bool notBusy);
 
         void scheduleReduce(MapReduceJob* job);
+
+        void initializeJobs();
 };

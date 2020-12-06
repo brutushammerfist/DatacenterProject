@@ -19,4 +19,6 @@ class JobManager {
         ~JobManager();
 
         MapReduceJob* newJob();
+
+        int getNumSimulJobs();
 };

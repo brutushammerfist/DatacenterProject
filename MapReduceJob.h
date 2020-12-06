@@ -40,4 +40,6 @@ class MapReduceJob {
         SubJob* getFirstReduceJob();
 
         std::list<SubJob*> getReduceJobs();
+
+        SubJob* getMapJob();
 };

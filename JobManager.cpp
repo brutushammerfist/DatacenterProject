@@ -26,3 +26,7 @@ MapReduceJob* JobManager::newJob() {
     this->nextID++;
     return job;
 }
+
+int JobManager::getNumSimulJobs() {
+    return this->numSimulJobs;
+}
