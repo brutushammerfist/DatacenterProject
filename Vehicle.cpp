@@ -40,11 +40,17 @@ bool Vehicle::isMigrating() {
 }
 
 void Vehicle::setJob(SubJob* job) {
-    std::cout << "Setting job...\n";
+    if (this->vm == nullptr) {
+        this->vm = new VirtualMachine(job);
+    } else {
+        this->vm->setJob(job);
+    }
+
+    /*std::cout << "Setting job...\n";
     this->vm->setJob(job);
     std::cout << "Job set...\n";
     this->isBusy = true;
-    std::cout << "Busy set...\n";
+    std::cout << "Busy set...\n";*/
 }
 
 void Vehicle::setBusy(bool busy) {
@@ -93,7 +99,9 @@ int Vehicle::getDeparture() {
 }
 
 void Vehicle::leave() {
-    this->vm->restartJob();
+    if (this->vm != nullptr) {
+        this->vm->restartJob();
+    }
     this->vm = nullptr;
     this->isBusy = false;
     

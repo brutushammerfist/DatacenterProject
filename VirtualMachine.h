@@ -15,6 +15,7 @@ class VirtualMachine {
     public:
         VirtualMachine();
         ~VirtualMachine();
+        VirtualMachine(SubJob* job);
 
         void work(DatacenterController* dcController, AccessPoint* acPoint, Vehicle* hostVehicle, int time);
 
@@ -23,4 +24,6 @@ class VirtualMachine {
         int migrateSize();
 
         void restartJob();
+
+        bool hasJob();
 };

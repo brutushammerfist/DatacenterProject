@@ -103,14 +103,11 @@ Vehicle* DatacenterController::getRandomVehicle(bool notBusy) {
     std::uniform_int_distribution<int> random(0, 3);
 
     if (notBusy) {
-        std::cout << "Getting vehicle that isn't busy...\n";
         Vehicle* vehicle = this->regions[random(generator)]->getRandomVehicle();
 
         while (vehicle->busy()) {
             vehicle = this->regions[random(generator)]->getRandomVehicle();
         }
-
-        std::cout << "Vehicle get!\n";
 
         return vehicle;
     } else {
@@ -144,13 +141,9 @@ void DatacenterController::checkJobs() {
     this->jobManager->checkJobs(this);
 
     if (this->jobManager->getNumCurrRunning() < this->jobManager->getNumSimulJobs()) {
-        std::cout << "Job has been completed...\n";
         MapReduceJob* job = this->jobManager->newJob();
-        std::cout << "New Job Created...\n";
         job->getMapJob()->setAssigned(true);
-        std::cout << "Assigned value set...\n";
         this->getRandomVehicle(true)->setJob(job->getMapJob());
-        std::cout << "Job assigned...\n";
     }
 }
 

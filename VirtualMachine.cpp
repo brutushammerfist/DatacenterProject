@@ -13,6 +13,11 @@ VirtualMachine::~VirtualMachine() {
 
 }
 
+VirtualMachine::VirtualMachine(SubJob* job) {
+    this->size = 500;
+    this->job = job;
+}
+
 void VirtualMachine::work(DatacenterController* dcController, AccessPoint* acPoint, Vehicle* hostVehicle, int time) {
     if (this->job != nullptr) {
         this->job->work(dcController, acPoint, hostVehicle, time);
@@ -20,11 +25,7 @@ void VirtualMachine::work(DatacenterController* dcController, AccessPoint* acPoi
 }
 
 void VirtualMachine::setJob(SubJob* job) {
-    std::cout << "VM setting job!\n";
-    std::cout << this->job << "\n";
-    std::cout << job << "\n";
-    this->job = job; // Crashing here!
-    std::cout << "VM job set!\n";
+    this->job = job;
 }
 
 int VirtualMachine::migrateSize() {
@@ -32,5 +33,15 @@ int VirtualMachine::migrateSize() {
 }
 
 void VirtualMachine::restartJob() {
-    this->job->restart();
+    if (this->job != nullptr) {
+        this->job->restart();
+    }
+}
+
+bool VirtualMachine::hasJob() {
+    if (this->job == nullptr) {
+        return false;
+    } else {
+        return true;
+    }
 }
