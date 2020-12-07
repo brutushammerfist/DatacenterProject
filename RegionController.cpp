@@ -45,9 +45,9 @@ void RegionController::display() {
     }
 }
 
-void RegionController::shiftChange(int shiftToReplace, std::list<Vehicle*> &vehicles) {
+void RegionController::shiftChange(int shiftToReplace, std::list<Vehicle*> &vehicles, int time) {
     for (int i = 0; i < 4; i++) {
-        this->groups[i]->shiftChange(shiftToReplace, vehicles);
+        this->groups[i]->shiftChange(shiftToReplace, vehicles, time);
     }
 }
 

@@ -78,9 +78,9 @@ void DatacenterController::display() {
 }
 
 // Make a shift change, swapping 320 vehicles currently in the datacenter with fresh vehicles
-void DatacenterController::shiftChange() {
+void DatacenterController::shiftChange(int time) {
     for (int i = 0; i < 4; i++) {
-        this->regions[i]->shiftChange(this->shiftToReplace, this->vehicles);
+        this->regions[i]->shiftChange(this->shiftToReplace, this->vehicles, time);
     }
 
     this->fillVehicles();
@@ -103,11 +103,14 @@ Vehicle* DatacenterController::getRandomVehicle(bool notBusy) {
     std::uniform_int_distribution<int> random(0, 3);
 
     if (notBusy) {
+        std::cout << "Getting vehicle that isn't busy...\n";
         Vehicle* vehicle = this->regions[random(generator)]->getRandomVehicle();
 
         while (vehicle->busy()) {
             vehicle = this->regions[random(generator)]->getRandomVehicle();
         }
+
+        std::cout << "Vehicle get!\n";
 
         return vehicle;
     } else {
@@ -121,6 +124,7 @@ void DatacenterController::scheduleReduce(MapReduceJob* job) {
     jitr++;
     
     while (jitr != jobs.end()) {
+        (*jitr)->setAssigned(true);
         this->getRandomVehicle(true)->setJob((*jitr));
         jitr++;
     }
@@ -131,6 +135,30 @@ void DatacenterController::initializeJobs() {
 
     for (int i = 0; i < this->jobManager->getNumSimulJobs(); i++) {
         job = this->jobManager->newJob();
+        job->getMapJob()->setAssigned(true);
         this->getRandomVehicle(true)->setJob(job->getMapJob());
     }
+}
+
+void DatacenterController::checkJobs() {
+    this->jobManager->checkJobs(this);
+
+    if (this->jobManager->getNumCurrRunning() < this->jobManager->getNumSimulJobs()) {
+        std::cout << "Job has been completed...\n";
+        MapReduceJob* job = this->jobManager->newJob();
+        std::cout << "New Job Created...\n";
+        job->getMapJob()->setAssigned(true);
+        std::cout << "Assigned value set...\n";
+        this->getRandomVehicle(true)->setJob(job->getMapJob());
+        std::cout << "Job assigned...\n";
+    }
+}
+
+int DatacenterController::numCompletedJobs() {
+    return this->jobManager->getNumCompleted();
+}
+
+void DatacenterController::assignJob(SubJob* job) {
+    this->getRandomVehicle(true)->setJob(job);
+    job->setAssigned(true);
 }

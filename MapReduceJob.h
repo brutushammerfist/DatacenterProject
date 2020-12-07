@@ -42,4 +42,6 @@ class MapReduceJob {
         std::list<SubJob*> getReduceJobs();
 
         SubJob* getMapJob();
+
+        bool complete();
 };

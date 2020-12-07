@@ -69,10 +69,11 @@ void AccessPoint::display() {
     }
 }
 
-void AccessPoint::shiftChange(int shiftToReplace, std::list<Vehicle*> &vehicles) {
+void AccessPoint::shiftChange(int shiftToReplace, std::list<Vehicle*> &vehicles, int time) {
     for (int i = 0; i < 40; i++) {
         if (this->cluster[i]->getShift() == shiftToReplace) {
             vehicles.push_back(this->cluster[i]);
+            this->cluster[i]->leave();
             this->cluster[i] = nullptr;
         }
     }

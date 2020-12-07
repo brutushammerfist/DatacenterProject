@@ -21,7 +21,7 @@ class RegionController {
 
         void display();
 
-        void shiftChange(int shiftToReplace, std::list<Vehicle*> &vehicles);
+        void shiftChange(int shiftToReplace, std::list<Vehicle*> &vehicles, int time);
 
         void work(DatacenterController* dcController, int time);
 

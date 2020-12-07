@@ -58,3 +58,7 @@ std::list<SubJob*> MapReduceJob::getReduceJobs() {
 SubJob* MapReduceJob::getMapJob() {
     return this->mapJob;
 }
+
+bool MapReduceJob::complete() {
+    return this->isComplete;
+}

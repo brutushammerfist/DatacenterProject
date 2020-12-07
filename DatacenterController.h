@@ -28,7 +28,7 @@ class DatacenterController {
 
         void display();
 
-        void shiftChange();
+        void shiftChange(int time);
 
         void work(int currTime);
 
@@ -37,4 +37,10 @@ class DatacenterController {
         void scheduleReduce(MapReduceJob* job);
 
         void initializeJobs();
+
+        void checkJobs();
+
+        int numCompletedJobs();
+
+        void assignJob(SubJob* job);
 };

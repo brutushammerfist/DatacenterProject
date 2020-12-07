@@ -21,4 +21,6 @@ class VirtualMachine {
         void setJob(SubJob* job);
 
         int migrateSize();
+
+        void restartJob();
 };

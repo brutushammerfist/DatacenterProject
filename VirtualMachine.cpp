@@ -1,8 +1,11 @@
+#include <iostream>
+
 #include "VirtualMachine.h"
 
 // Default Constructor
 VirtualMachine::VirtualMachine() {
     this->size = 500;
+    this->job = nullptr;
 }
 
 // Default Destructor
@@ -17,9 +20,17 @@ void VirtualMachine::work(DatacenterController* dcController, AccessPoint* acPoi
 }
 
 void VirtualMachine::setJob(SubJob* job) {
-    this->job = job;
+    std::cout << "VM setting job!\n";
+    std::cout << this->job << "\n";
+    std::cout << job << "\n";
+    this->job = job; // Crashing here!
+    std::cout << "VM job set!\n";
 }
 
 int VirtualMachine::migrateSize() {
     return 500 + this->job->getInputSize();
+}
+
+void VirtualMachine::restartJob() {
+    this->job->restart();
 }

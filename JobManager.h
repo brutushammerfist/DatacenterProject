@@ -4,6 +4,7 @@
 
 #include "MapReduceJob.h"
 
+class DatacenterController;
 class MapReduceJob;
 
 class JobManager {
@@ -21,4 +22,10 @@ class JobManager {
         MapReduceJob* newJob();
 
         int getNumSimulJobs();
+
+        int getNumCurrRunning();
+
+        void checkJobs(DatacenterController* dcController);
+
+        int getNumCompleted();
 };

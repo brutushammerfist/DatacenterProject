@@ -44,9 +44,9 @@ void GroupController::display() {
     }
 }
 
-void GroupController::shiftChange(int shiftToReplace, std::list<Vehicle*> &vehicles) {
+void GroupController::shiftChange(int shiftToReplace, std::list<Vehicle*> &vehicles, int time) {
     for (int i = 0; i < 4; i++) {
-        this->accessPoints[i]->shiftChange(shiftToReplace, vehicles);
+        this->accessPoints[i]->shiftChange(shiftToReplace, vehicles, time);
     }
 }
 

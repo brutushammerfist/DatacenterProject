@@ -44,6 +44,8 @@ SubJob::~SubJob() {
 
 void SubJob::work(DatacenterController* dcController, AccessPoint* acPoint, Vehicle* hostVehicle, int time) {
     if (!complete) {
+        std::cout << "working...\n";
+        
         // Job not finished running and uploading
         this->actualCompletionTime++;
         
@@ -130,4 +132,28 @@ void SubJob::work(DatacenterController* dcController, AccessPoint* acPoint, Vehi
 
 int SubJob::getInputSize() {
     return this->inputSize;
+}
+
+void SubJob::setAssigned(bool isAssigned) {
+    this->isAssigned = isAssigned;
+}
+
+void SubJob::restart() {
+    this->workingTimeToCompletion = this->estimatedCompletionTime;
+    this->workComplete = false;
+    this->uploaded = false;
+    this->complete = false;
+    this->isAssigned = false;
+    this->currUploaded = 0;
+    this->currInputDownloaded = 0;
+    this->intermediateTargetOne = nullptr;
+    this->intermediateTargetTwo = nullptr;
+    this->intermediateOneTransfered = false;
+    this->intermediateTwoTransfered = false;
+    this->currTransferOne = 0;
+    this->currTransferTwo = 0;
+}
+
+bool SubJob::assigned() {
+    return this->isAssigned;
 }

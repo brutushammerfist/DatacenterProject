@@ -27,6 +27,7 @@ class SubJob {
         int actualCompletionTime;
         int workingTimeToCompletion;
         int currUploaded;
+        bool isAssigned;
 
         bool workComplete;
         bool uploaded;
@@ -39,4 +40,10 @@ class SubJob {
         void work(DatacenterController* dcController, AccessPoint* acPoint, Vehicle* hostVehicle, int time);
 
         int getInputSize();
+
+        void setAssigned(bool isAssigned);
+
+        void restart();
+
+        bool assigned();
 };

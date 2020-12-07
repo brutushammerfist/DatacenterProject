@@ -49,4 +49,10 @@ class Vehicle {
         void migrate();
 
         void migrateVM(VirtualMachine* vm, std::list<MapReduceJob*> &jobs);
+
+        void setMigrate(bool migrate);
+
+        int getDeparture();
+
+        void leave();
 };

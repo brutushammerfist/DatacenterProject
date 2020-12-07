@@ -25,7 +25,7 @@ class AccessPoint {
 
         void display();
 
-        void shiftChange(int shiftToReplace, std::list<Vehicle*> &vehicles);
+        void shiftChange(int shiftToReplace, std::list<Vehicle*> &vehicles, int time);
 
         Vehicle* getBandwidthUser();
 
