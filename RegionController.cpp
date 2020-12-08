@@ -1,3 +1,4 @@
+#include <ctime>
 #include <iostream>
 
 #include "RegionController.h"
@@ -51,15 +52,25 @@ void RegionController::shiftChange(int shiftToReplace, std::list<Vehicle*> &vehi
     }
 }
 
-void RegionController::work(DatacenterController* dcController, int time) {
+void RegionController::work(DatacenterController* dcController, int time, int migrationType) {
     for (int i = 0; i < 4; i++) {
-        this->groups[i]->work(dcController, time);
+        this->groups[i]->work(dcController, time, migrationType);
     }
 }
 
 Vehicle* RegionController::getRandomVehicle() {
-    std::default_random_engine generator;
-    std::uniform_int_distribution<int> random(0, 3);
+    return this->groups[(rand() % 4)]->getRandomVehicle();
+}
 
-    return this->groups[random(generator)]->getRandomVehicle();
+Vehicle* RegionController::findMigrationMatch(int timeUntilCompletion, int dataSize, int currTime) {
+    Vehicle* vehicle = nullptr;
+        
+    for (int i = 0; i < 4; i++) {
+        vehicle = this->groups[i]->findMigrationMatch(timeUntilCompletion, dataSize, currTime);
+        if (vehicle != nullptr) {
+            return vehicle;
+        }
+    }
+
+    return vehicle;
 }

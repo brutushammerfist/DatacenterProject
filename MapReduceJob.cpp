@@ -1,4 +1,6 @@
+#include <iostream>
 #include <random>
+
 #include "MapReduceJob.h"
 
 // Default Constructor
@@ -21,8 +23,9 @@ MapReduceJob::MapReduceJob(int id, int numReducers) {
     this->id = id;
     this->numSubJobs = numReducers;
     this->inputSize = 500;
-    this->estimatedCompletionTime = completionTimeDistribution(this->generator);
+    this->estimatedCompletionTime = (completionTimeDistribution(this->generator)) * 3600;
     this->intermediateDataSize = intermediateDataSizeDistribution(this->generator);
+    this->isComplete = false;
 
     this->mapJob = new SubJob(this, (int)(this->estimatedCompletionTime / 2) + 1, true, 500);
 
@@ -53,7 +56,7 @@ SubJob* MapReduceJob::getFirstReduceJob() {
     return this->reduceJobs.front();
 }
 
-std::list<SubJob*> MapReduceJob::getReduceJobs() {
+std::list<SubJob*>& MapReduceJob::getReduceJobs() {
     return this->reduceJobs;
 }
 
@@ -63,4 +66,19 @@ SubJob* MapReduceJob::getMapJob() {
 
 bool MapReduceJob::complete() {
     return this->isComplete;
+}
+
+void MapReduceJob::checkComplete() {
+    if (this->mapJob->isComplete()) {
+        std::list<SubJob*>::iterator jitr = this->reduceJobs.begin();
+
+        while (jitr != this->reduceJobs.end()) {
+            if (!(*jitr)->isComplete()) {
+                return;
+            }
+            jitr++;
+        }
+
+        this->isComplete = true;
+    }
 }

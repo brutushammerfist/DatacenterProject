@@ -34,7 +34,7 @@ class Vehicle {
 
         int getShift();
 
-        void work(DatacenterController* dcController, AccessPoint* acPoint, int time);
+        void work(DatacenterController* dcController, AccessPoint* acPoint, int time, int migrationType);
 
         bool isMigrating();
 
@@ -55,4 +55,10 @@ class Vehicle {
         int getDeparture();
 
         void leave();
+
+        int getTimeUntilDeparture(int currTime);
+
+        int getMigrateSize();
+
+        void setMigrationTarget(Vehicle* target);
 };

@@ -1,3 +1,4 @@
+#include <ctime>
 #include <iostream>
 #include <random>
 
@@ -41,6 +42,8 @@ DatacenterController::DatacenterController(int numReducers) {
     this->shiftToReplace = 0;
 
     this->jobManager = new JobManager(numReducers);
+
+    this->initializeJobs();
 }
 
 // Check if the datacenter is currently full of vehicles
@@ -92,26 +95,24 @@ void DatacenterController::shiftChange(int time) {
     }
 }
 
-void DatacenterController::work(int time) {
+void DatacenterController::work(int time, int migrationType) {
+    std::cout << time << std::endl;
     for (int i = 0; i < 4; i++) {
-        this->regions[i]->work(this, time);
+        this->regions[i]->work(this, time, migrationType);
     }
 }
 
 Vehicle* DatacenterController::getRandomVehicle(bool notBusy) {
-    std::default_random_engine generator;
-    std::uniform_int_distribution<int> random(0, 3);
-
     if (notBusy) {
-        Vehicle* vehicle = this->regions[random(generator)]->getRandomVehicle();
+        Vehicle* vehicle = this->regions[(rand() % 4)]->getRandomVehicle();
 
         while (vehicle->busy()) {
-            vehicle = this->regions[random(generator)]->getRandomVehicle();
+            vehicle = this->regions[(rand() % 4)]->getRandomVehicle();
         }
 
         return vehicle;
     } else {
-        return this->regions[random(generator)]->getRandomVehicle();
+        return this->regions[(rand() % 4)]->getRandomVehicle();
     }
 }
 
@@ -154,4 +155,21 @@ int DatacenterController::numCompletedJobs() {
 void DatacenterController::assignJob(SubJob* job) {
     this->getRandomVehicle(true)->setJob(job);
     job->setAssigned(true);
+}
+
+Vehicle* DatacenterController::findMigrationMatch(int timeUntilCompletion, int dataSize, int currTime) {
+    Vehicle* vehicle = nullptr;
+    
+    for (int i = 0; i < 4; i++) {
+        vehicle = this->regions[i]->findMigrationMatch(timeUntilCompletion, dataSize, currTime);
+        if (vehicle != nullptr) {
+            return vehicle;
+        }
+    }
+
+    return vehicle;
+}
+
+void DatacenterController::displayRunningJobStatus() {
+    this->jobManager->displayRunningJobStatus();
 }

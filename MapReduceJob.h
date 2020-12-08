@@ -39,9 +39,11 @@ class MapReduceJob {
 
         SubJob* getFirstReduceJob();
 
-        std::list<SubJob*> getReduceJobs();
+        std::list<SubJob*>& getReduceJobs();
 
         SubJob* getMapJob();
 
         bool complete();
+
+        void checkComplete();
 };

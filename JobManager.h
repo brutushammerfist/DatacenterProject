@@ -28,4 +28,6 @@ class JobManager {
         void checkJobs(DatacenterController* dcController);
 
         int getNumCompleted();
+
+        void displayRunningJobStatus();
 };

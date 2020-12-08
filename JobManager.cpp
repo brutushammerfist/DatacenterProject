@@ -11,7 +11,7 @@ JobManager::JobManager(int numReducers) {
 
     int numJobs = 1;
 
-    while ((double)((numJobs * numReducers) / 2560) < 0.8) {
+    while ((double)((numJobs * numReducers) / 2560.0) < 0.8) {
         numJobs++;
     }
 
@@ -45,15 +45,16 @@ void JobManager::checkJobs(DatacenterController* dcController) {
             this->completedJobs.push_back(*jitr);
             jitr = this->runningJobs.erase(jitr);
         } else {
-            
-            std::list<SubJob*>::iterator sitr = (*jitr)->getReduceJobs().begin();
+            if ((*jitr)->getMapJob()->isComplete()) {
+                std::list<SubJob*>::iterator sitr = (*jitr)->getReduceJobs().begin();
 
-            while (sitr != (*jitr)->getReduceJobs().end()) {
-                if (!(*sitr)->assigned()) {
-                    dcController->assignJob(*sitr);
+                while (sitr != (*jitr)->getReduceJobs().end()) {
+                    if (!(*sitr)->assigned()) {
+                        dcController->assignJob(*sitr);
+                    }
+
+                    sitr++;
                 }
-
-                sitr++;
             }
 
             jitr++;
@@ -63,4 +64,19 @@ void JobManager::checkJobs(DatacenterController* dcController) {
 
 int JobManager::getNumCompleted() {
     return this->completedJobs.size();
+}
+
+void JobManager::displayRunningJobStatus() {
+    std::list<MapReduceJob*>::iterator jitr = this->runningJobs.begin();
+
+    while (jitr != this->runningJobs.end()) {
+        if ((*jitr)->complete()) {
+            std::cout << "true\n";
+            
+            int temp = 0;
+            std::cin >> temp;
+        }
+
+        jitr++;
+    }
 }

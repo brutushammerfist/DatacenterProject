@@ -1,3 +1,4 @@
+#include <ctime>
 #include <iostream>
 
 #include "GroupController.h"
@@ -50,15 +51,25 @@ void GroupController::shiftChange(int shiftToReplace, std::list<Vehicle*> &vehic
     }
 }
 
-void GroupController::work(DatacenterController* dcController, int time) {
+void GroupController::work(DatacenterController* dcController, int time, int migrationType) {
     for (int i = 0; i < 4; i++) {
-        this->accessPoints[i]->work(dcController, time);
+        this->accessPoints[i]->work(dcController, time, migrationType);
     }
 }
 
 Vehicle* GroupController::getRandomVehicle() {
-    std::default_random_engine generator;
-    std::uniform_int_distribution<int> random(0, 3);
+    return this->accessPoints[(rand() % 4)]->getRandomVehicle();
+}
 
-    return this->accessPoints[random(generator)]->getRandomVehicle();
+Vehicle* GroupController::findMigrationMatch(int timeUntilCompletion, int dataSize, int currTime) {
+    Vehicle* vehicle = nullptr;
+        
+    for (int i = 0; i < 4; i++) {
+        vehicle = this->accessPoints[i]->findMigrationMatch(timeUntilCompletion, dataSize, currTime);
+        if (vehicle != nullptr) {
+            return vehicle;
+        }
+    }
+
+    return vehicle;
 }

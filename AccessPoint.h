@@ -11,6 +11,7 @@ class AccessPoint {
     private:
         Vehicle* cluster[40];
 
+        std::list<Vehicle*> queueContents;
         std::queue<Vehicle*> bandwidthQueue;
         Vehicle* bandwidthUser;
     public:
@@ -29,11 +30,17 @@ class AccessPoint {
 
         Vehicle* getBandwidthUser();
 
-        void work(DatacenterController* dcController, int time);
+        void work(DatacenterController* dcController, int time, int migrationType);
 
         Vehicle* getRandomVehicle();
 
         void swapBandwidthUser();
 
         void addToBandwidthQueue(Vehicle* vehicle);
+
+        void printQueue();
+
+        Vehicle* findMigrationMatch(int timeUntilCompletion, int dataSize, int currTime);
+
+        int etaQueueEmpty();
 };

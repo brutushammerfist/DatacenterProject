@@ -1,3 +1,4 @@
+#include <ctime>
 #include <iostream>
 #include <random>
 
@@ -83,17 +84,14 @@ Vehicle* AccessPoint::getBandwidthUser() {
     return this->bandwidthUser;
 }
 
-void AccessPoint::work(DatacenterController* dcController, int time) {
+void AccessPoint::work(DatacenterController* dcController, int time, int migrationType) {
     for (int i = 0; i < 40; i++) {
-        this->cluster[i]->work(dcController, this, time);
+        this->cluster[i]->work(dcController, this, time, migrationType);
     }
 }
 
 Vehicle* AccessPoint::getRandomVehicle() {
-    std::default_random_engine generator;
-    std::uniform_int_distribution<int> random(0, 39);
-
-    return this->cluster[random(generator)];
+    return this->cluster[(rand() % 40)];
 }
 
 void AccessPoint::swapBandwidthUser() {
@@ -101,6 +99,72 @@ void AccessPoint::swapBandwidthUser() {
     
     if (!this->bandwidthQueue.empty()) {
         this->bandwidthUser = this->bandwidthQueue.front();
+        queueContents.remove(bandwidthQueue.front());
         this->bandwidthQueue.pop();
     }
+}
+
+void AccessPoint::addToBandwidthQueue(Vehicle* vehicle) {
+    std::list<Vehicle*>::iterator vitr = this->queueContents.begin();
+
+    while (vitr != this->queueContents.end()) {
+        if (vehicle == (*vitr)) {
+            return;
+        }
+        vitr++;
+    }
+    
+    if (this->bandwidthUser != vehicle) {
+        this->bandwidthQueue.push(vehicle);
+        this->queueContents.push_back(vehicle);
+    }
+
+    if (this->bandwidthUser == nullptr) {
+        this->swapBandwidthUser();
+    }
+}
+
+void AccessPoint::printQueue() {
+    std::cout << "Queue Size: " << this->queueContents.size() << std::endl;
+
+    std::list<Vehicle*>::iterator vitr = this->queueContents.begin();
+
+    while (vitr != this->queueContents.end()) {
+        std::cout << (*vitr) << std::endl;
+        vitr++;
+    }
+}
+
+Vehicle* AccessPoint::findMigrationMatch(int timeUntilCompletion, int dataSize, int currTime) {
+    Vehicle* vehicle = nullptr;
+
+    if ((this->etaQueueEmpty() + timeUntilCompletion + (int)(dataSize / 54) + 1) > 28800) {
+        return vehicle;
+    }
+        
+    for (int i = 0; i < 40; i++) {
+        if ((this->etaQueueEmpty() + timeUntilCompletion + (int)(dataSize / 54) + 1) < (this->cluster[i]->getDeparture() - currTime)) {
+            return this->cluster[i];
+        }
+    }
+
+    return vehicle;
+}
+
+int AccessPoint::etaQueueEmpty() {
+    int eta = 0;
+
+    if (this->bandwidthUser != nullptr) {
+        eta += (int)(this->bandwidthUser->getMigrateSize() / 54) + 1;
+    }
+
+    std::list<Vehicle*>::iterator vitr = this->queueContents.begin();
+
+    while (vitr != this->queueContents.end()) {
+        eta += (int)((*vitr)->getMigrateSize() / 54) + 1;
+
+        vitr++;
+    }
+
+    return eta;
 }

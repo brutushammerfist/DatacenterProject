@@ -18,9 +18,9 @@ VirtualMachine::VirtualMachine(SubJob* job) {
     this->job = job;
 }
 
-void VirtualMachine::work(DatacenterController* dcController, AccessPoint* acPoint, Vehicle* hostVehicle, int time) {
+void VirtualMachine::work(DatacenterController* dcController, AccessPoint* acPoint, Vehicle* hostVehicle, int time, int migrationType) {
     if (this->job != nullptr) {
-        this->job->work(dcController, acPoint, hostVehicle, time);
+        this->job->work(dcController, acPoint, hostVehicle, time, migrationType);
     }
 }
 
@@ -29,7 +29,10 @@ void VirtualMachine::setJob(SubJob* job) {
 }
 
 int VirtualMachine::migrateSize() {
-    return 500 + this->job->getInputSize();
+    if (this->job != nullptr) {
+        return 500 + this->job->getInputSize();
+    }
+    return 500;
 }
 
 void VirtualMachine::restartJob() {

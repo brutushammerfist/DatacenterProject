@@ -7,6 +7,8 @@ Vehicle::Vehicle() {
     this->id = -1;
     this->isBusy = false;
     this->vm = nullptr;
+    this->migrating = false;
+    this->currMigrated = 0;
 }
 
 // Constructor with ID as parameter
@@ -14,6 +16,8 @@ Vehicle::Vehicle(int id) {
     this->id = id;
     this->isBusy = false;
     this->vm = nullptr;
+    this->migrating = false;
+    this->currMigrated = 0;
 }
 
 // Default Destructor
@@ -29,9 +33,9 @@ int Vehicle::getShift() {
     return this->id % 24;
 }
 
-void Vehicle::work(DatacenterController* dcController, AccessPoint* acPoint, int time) {
+void Vehicle::work(DatacenterController* dcController, AccessPoint* acPoint, int time, int migrationType) {
     if (this->vm != nullptr) {
-        this->vm->work(dcController, acPoint, this, time);
+        this->vm->work(dcController, acPoint, this, time, migrationType);
     }
 }
 
@@ -42,15 +46,11 @@ bool Vehicle::isMigrating() {
 void Vehicle::setJob(SubJob* job) {
     if (this->vm == nullptr) {
         this->vm = new VirtualMachine(job);
+        this->isBusy = true;
     } else {
         this->vm->setJob(job);
+        this->isBusy = true;
     }
-
-    /*std::cout << "Setting job...\n";
-    this->vm->setJob(job);
-    std::cout << "Job set...\n";
-    this->isBusy = true;
-    std::cout << "Busy set...\n";*/
 }
 
 void Vehicle::setBusy(bool busy) {
@@ -111,4 +111,30 @@ void Vehicle::leave() {
     this->currMigrated = 0;
     this->migrating = false;
     this->migrationTarget = nullptr;
+}
+
+int Vehicle::getTimeUntilDeparture(int currTime) {
+    return (this->departure - currTime);
+}
+
+int Vehicle::getMigrateSize() {
+    int size = 0;
+    
+    if (this->vm != nullptr) {
+        size += this->vm->migrateSize();
+    }
+
+    std::list<MapReduceJob*>::iterator jitr = this->savedJobs.begin();
+
+    while (jitr != this->savedJobs.end()) {
+        size += (*jitr)->getIntermediateSize();
+
+        jitr++;
+    }
+
+    return size;
+}
+
+void Vehicle::setMigrationTarget(Vehicle* target) {
+    this->migrationTarget = target;
 }

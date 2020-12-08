@@ -37,7 +37,7 @@ class SubJob {
         SubJob(MapReduceJob* mainJob, int estimated, bool map, int inputSize);
         ~SubJob();
 
-        void work(DatacenterController* dcController, AccessPoint* acPoint, Vehicle* hostVehicle, int time);
+        void work(DatacenterController* dcController, AccessPoint* acPoint, Vehicle* hostVehicle, int time, int migrationType);
 
         int getInputSize();
 
@@ -46,4 +46,8 @@ class SubJob {
         void restart();
 
         bool assigned();
+
+        bool isComplete();
+
+        int timeToCompletion();
 };

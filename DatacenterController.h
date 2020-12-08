@@ -30,7 +30,7 @@ class DatacenterController {
 
         void shiftChange(int time);
 
-        void work(int currTime);
+        void work(int currTime, int migrationType);
 
         Vehicle* getRandomVehicle(bool notBusy);
 
@@ -43,4 +43,8 @@ class DatacenterController {
         int numCompletedJobs();
 
         void assignJob(SubJob* job);
+
+        Vehicle* findMigrationMatch(int timeUntilCompletion, int dataSize, int currTime);
+
+        void displayRunningJobStatus();
 };
