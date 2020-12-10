@@ -46,4 +46,6 @@ class MapReduceJob {
         bool complete();
 
         void checkComplete();
+
+        void printStatus();
 };

@@ -82,3 +82,33 @@ void MapReduceJob::checkComplete() {
         this->isComplete = true;
     }
 }
+
+void MapReduceJob::printStatus() {
+    bool pause = false;
+    std::cout << "+------------------------------------+" << std::endl;
+    std::cout << this->mapJob->migrating() << " | " << this->mapJob->timeToCompletion() << " | " << this->mapJob->assigned() << " | " << this->mapJob->getActualCompletionTime() << std::endl;
+
+    if (this->mapJob->migrating() ) {
+        pause = true;
+    }
+
+    std::cout << "--------------------------------------" << std::endl;
+
+    std::list<SubJob*>::iterator jitr = this->reduceJobs.begin();
+
+    while (jitr != this->reduceJobs.end()) {
+        std::cout << (*jitr)->migrating() << " | " << (*jitr)->timeToCompletion() << " | " << (*jitr)->assigned() << " | " << (*jitr)->getActualCompletionTime() << std::endl;
+
+        if ((*jitr)->migrating()) {
+            pause = true;
+        }
+        jitr++;
+    }
+
+    std::cout << "+------------------------------------+" << std::endl;
+
+    /*if (pause) {
+        int temp = 0;
+        std::cin >> temp;
+    }*/
+}

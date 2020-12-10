@@ -53,6 +53,8 @@ SubJob::SubJob(MapReduceJob* mainJob, int estimated, bool map, int inputSize) {
     this->intermediateTargetTwo = nullptr;
     this->intermediateTwoTransfered = false;
     this->currTransferTwo = 0;
+
+    this->isMigrating = false;
 }
 
 SubJob::~SubJob() {
@@ -65,11 +67,14 @@ void SubJob::work(DatacenterController* dcController, AccessPoint* acPoint, Vehi
         this->actualCompletionTime++;
 
         // migrationType == 0, don't migrate
+
         if (migrationType == 1) {
             // Migrate ASAP
             // Check every hour(shift change) for someone to swap to
             if (time % 3600 == 0) {
+                //If vehicle is not already migrating
                 if (!hostVehicle->isMigrating()) {
+                    // Job runnitime is greater than departure time, vehicle leaves before job can finish
                     if (((acPoint->etaQueueEmpty() + this->workingTimeToCompletion + (int)(this->mainJob->getIntermediateSize() / 54) + 1) > (hostVehicle->getDeparture() - time + 1))) {
                         Vehicle* migrationVehicle = dcController->findMigrationMatch(this->workingTimeToCompletion, this->mainJob->getIntermediateSize(), time);
                         if (migrationVehicle == nullptr) {
@@ -77,14 +82,17 @@ void SubJob::work(DatacenterController* dcController, AccessPoint* acPoint, Vehi
                             //std::cout << "No suitable candidate found\n";
                             if ((hostVehicle->getDeparture() - time) <= 3600) {
                                 // Only has one hour left in datacenter, migrate anyway to random vehicle
-                                hostVehicle->setMigrationTarget(dcController->getRandomVehicle(true));
+                                migrationVehicle = dcController->getRandomVehicle(true);
+                                hostVehicle->setMigrationTarget(migrationVehicle);
                                 hostVehicle->setMigrate(true);
+                                this->isMigrating = true;
                             }
                         } else {
                             // Suitable candidate found
                             //std::cout << "Suitable candidate found\n";
                             hostVehicle->setMigrationTarget(migrationVehicle);
                             hostVehicle->setMigrate(true);
+                            this->isMigrating = true;
                         }
                     }
                 }
@@ -231,4 +239,20 @@ bool SubJob::assigned() {
 
 bool SubJob::isComplete() {
     return this->uploaded;
+}
+
+int SubJob::timeToCompletion() {
+    return this->workingTimeToCompletion;
+}
+
+bool SubJob::migrating() {
+    return this->isMigrating;
+}
+
+void SubJob::setMigrating(bool migrate) {
+    this->isMigrating = migrate;
+}
+
+int SubJob::getActualCompletionTime() {
+    return this->actualCompletionTime;
 }

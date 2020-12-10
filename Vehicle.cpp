@@ -81,6 +81,12 @@ void Vehicle::migrate() {
     if (this->currMigrated >= migrateCap) {
         this->migrationTarget->migrateVM(this->vm, this->savedJobs);
         this->migrating = false;
+        this->vm->getJob()->setMigrating(false);
+        this->vm = nullptr;
+        std::cout << "Migration done!\n";
+
+        int temp = 0;
+        std::cin >> temp;
     }
 }
 
@@ -88,6 +94,8 @@ void Vehicle::migrateVM(VirtualMachine* vm, std::list<MapReduceJob*> &jobs) {
     this->vm = vm;
 
     this->savedJobs.merge(jobs);
+
+    this->isBusy = true;
 }
 
 void Vehicle::setMigrate(bool migrate) {

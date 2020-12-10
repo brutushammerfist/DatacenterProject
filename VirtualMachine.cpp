@@ -48,3 +48,7 @@ bool VirtualMachine::hasJob() {
         return true;
     }
 }
+
+SubJob* VirtualMachine::getJob() {
+    return this->job;
+}

@@ -26,4 +26,6 @@ class VirtualMachine {
         void restartJob();
 
         bool hasJob();
+
+        SubJob* getJob();
 };

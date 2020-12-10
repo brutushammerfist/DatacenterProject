@@ -29,6 +29,8 @@ class SubJob {
         int currUploaded;
         bool isAssigned;
 
+        bool isMigrating;
+
         bool workComplete;
         bool uploaded;
         bool complete;
@@ -50,4 +52,10 @@ class SubJob {
         bool isComplete();
 
         int timeToCompletion();
+
+        bool migrating();
+
+        void setMigrating(bool migrate);
+
+        int getActualCompletionTime();
 };

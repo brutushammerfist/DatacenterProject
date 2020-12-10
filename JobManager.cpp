@@ -40,6 +40,8 @@ int JobManager::getNumCurrRunning() {
 void JobManager::checkJobs(DatacenterController* dcController) {
     std::list<MapReduceJob*>::iterator jitr = this->runningJobs.begin();
 
+    (*jitr)->printStatus();
+
     while (jitr != this->runningJobs.end()) {
         if ((*jitr)->complete()) {
             this->completedJobs.push_back(*jitr);
