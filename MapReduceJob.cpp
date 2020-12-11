@@ -86,8 +86,12 @@ void MapReduceJob::checkComplete() {
 void MapReduceJob::printStatus() {
     bool pause = false;
     std::cout << "+------------------------------------+" << std::endl;
-    std::cout << this->mapJob->migrating() << " | " << this->mapJob->timeToCompletion() << " | " << this->mapJob->assigned() << " | " << this->mapJob->getActualCompletionTime() << std::endl;
+    std::cout << this->mapJob->migrating() << " | " << this->mapJob->timeToCompletion() << " | " << this->mapJob->assigned() << " | " << this->mapJob->getActualCompletionTime() << " | " << this->mapJob->getCurrMigrated() << " | " << this->mapJob->isBandwidthUser() << " | " << this->mapJob->waitingForAP() << std::endl;
 
+    this->mapJob->printACQueue();
+
+    std::cout << this->mapJob->getHost() << std::endl;
+    
     if (this->mapJob->migrating() ) {
         pause = true;
     }
@@ -97,8 +101,10 @@ void MapReduceJob::printStatus() {
     std::list<SubJob*>::iterator jitr = this->reduceJobs.begin();
 
     while (jitr != this->reduceJobs.end()) {
-        std::cout << (*jitr)->migrating() << " | " << (*jitr)->timeToCompletion() << " | " << (*jitr)->assigned() << " | " << (*jitr)->getActualCompletionTime() << std::endl;
+        std::cout << (*jitr)->migrating() << " | " << (*jitr)->timeToCompletion() << " | " << (*jitr)->assigned() << " | " << (*jitr)->getActualCompletionTime() << " | " << (*jitr)->getCurrMigrated() << " | " << (*jitr)->isBandwidthUser() << " | " << (*jitr)->waitingForAP() << std::endl;
 
+        (*jitr)->printACQueue();
+        
         if ((*jitr)->migrating()) {
             pause = true;
         }

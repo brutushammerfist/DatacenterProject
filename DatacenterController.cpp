@@ -1,6 +1,6 @@
-#include <ctime>
 #include <iostream>
 #include <random>
+#include <ctime>
 
 #include "DatacenterController.h"
 
@@ -96,7 +96,7 @@ void DatacenterController::shiftChange(int time) {
 }
 
 void DatacenterController::work(int time, int migrationType) {
-    std::cout << time << std::endl;
+    //std::cout << time << std::endl;
     for (int i = 0; i < 4; i++) {
         this->regions[i]->work(this, time, migrationType);
     }
@@ -123,14 +123,9 @@ void DatacenterController::scheduleReduce(MapReduceJob* job) {
     
     while (jitr != jobs.end()) {
         (*jitr)->setAssigned(true);
-        //Vehicle* vehicle = this->getRandomVehicle(true);
         this->getRandomVehicle(true)->setJob((*jitr));
-        //vehicle->setJob((*jitr));
         jitr++;
     }
-
-    int temp = 0;
-    std::cin >> temp;
 }
 
 void DatacenterController::initializeJobs() {

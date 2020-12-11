@@ -30,7 +30,7 @@ int main(int argc, char** argv) {
         dcController.checkJobs();
     }*/
 
-    for (int i = 1; i < 3; i++) {
+    for (int i = 0; i < 3; i++) {
         DatacenterController dcController = DatacenterController(atoi(argv[2]));
 
         const long endTime = atoi(argv[1]) * 604800;
@@ -45,16 +45,11 @@ int main(int argc, char** argv) {
                 dcController.shiftChange(time);
             }
 
-            //dcController.displayRunningJobStatus();
-
             dcController.checkJobs();
         }
 
         std::cout << "Simulation complete!\n";
         std::cout << dcController.numCompletedJobs() << " jobs have been completed.\n";
-
-        int temp = 0;
-        std::cin >> temp;
     }
 
     //std::cout << "Simulation complete!\n";

@@ -133,6 +133,8 @@ void AccessPoint::printQueue() {
         std::cout << (*vitr) << std::endl;
         vitr++;
     }
+
+    std::cout << "Current Bandwidth User: " << this->bandwidthUser << std::endl;
 }
 
 Vehicle* AccessPoint::findMigrationMatch(int timeUntilCompletion, int dataSize, int currTime) {

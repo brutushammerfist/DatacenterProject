@@ -46,7 +46,7 @@ class Vehicle {
 
         bool busy();
 
-        void migrate();
+        void migrate(AccessPoint* acPoint);
 
         void migrateVM(VirtualMachine* vm, std::list<MapReduceJob*> &jobs);
 

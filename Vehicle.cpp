@@ -16,8 +16,11 @@ Vehicle::Vehicle(int id) {
     this->id = id;
     this->isBusy = false;
     this->vm = nullptr;
-    this->migrating = false;
+    this->arrival = 0;
+    this->departure = 0;
     this->currMigrated = 0;
+    this->migrating = false;
+    this->migrationTarget = nullptr;
 }
 
 // Default Destructor
@@ -66,7 +69,7 @@ bool Vehicle::busy() {
     return this->isBusy;
 }
 
-void Vehicle::migrate() {
+void Vehicle::migrate(AccessPoint* acPoint) {
     this->currMigrated += 54;
 
     std::list<MapReduceJob*>::iterator jitr = this->savedJobs.begin();
@@ -78,15 +81,16 @@ void Vehicle::migrate() {
         jitr++;
     }
 
+    this->vm->getJob()->setCurrMigrated(this->currMigrated);
+
     if (this->currMigrated >= migrateCap) {
         this->migrationTarget->migrateVM(this->vm, this->savedJobs);
         this->migrating = false;
         this->vm->getJob()->setMigrating(false);
+        this->isBusy = false;
         this->vm = nullptr;
-        std::cout << "Migration done!\n";
-
-        int temp = 0;
-        std::cin >> temp;
+        acPoint->swapBandwidthUser();
+        this->currMigrated = 0;
     }
 }
 

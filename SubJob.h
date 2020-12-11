@@ -11,6 +11,9 @@ class SubJob {
     private:
         MapReduceJob* mainJob;
 
+        Vehicle* vehicle;
+        AccessPoint* ac;
+
         bool map;
         Vehicle* intermediateTargetOne;
         int currTransferOne;
@@ -30,6 +33,7 @@ class SubJob {
         bool isAssigned;
 
         bool isMigrating;
+        int currMigrated;
 
         bool workComplete;
         bool uploaded;
@@ -58,4 +62,16 @@ class SubJob {
         void setMigrating(bool migrate);
 
         int getActualCompletionTime();
+
+        void setCurrMigrated(int migrated);
+
+        int getCurrMigrated();
+        
+        bool isBandwidthUser();
+
+        void printACQueue();
+
+        Vehicle* getHost();
+
+        bool waitingForAP();
 };

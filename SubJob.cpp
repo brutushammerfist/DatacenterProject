@@ -55,6 +55,10 @@ SubJob::SubJob(MapReduceJob* mainJob, int estimated, bool map, int inputSize) {
     this->currTransferTwo = 0;
 
     this->isMigrating = false;
+    this->currMigrated = 0;
+
+    this->ac = nullptr;
+    this->vehicle = nullptr;
 }
 
 SubJob::~SubJob() {
@@ -62,6 +66,9 @@ SubJob::~SubJob() {
 }
 
 void SubJob::work(DatacenterController* dcController, AccessPoint* acPoint, Vehicle* hostVehicle, int time, int migrationType) {
+    this->ac = acPoint;
+    this->vehicle = hostVehicle;
+    
     if (!complete) {
         // Job not finished running and uploading
         this->actualCompletionTime++;
@@ -79,20 +86,26 @@ void SubJob::work(DatacenterController* dcController, AccessPoint* acPoint, Vehi
                         Vehicle* migrationVehicle = dcController->findMigrationMatch(this->workingTimeToCompletion, this->mainJob->getIntermediateSize(), time);
                         if (migrationVehicle == nullptr) {
                             // No suitable candidate found
-                            //std::cout << "No suitable candidate found\n";
                             if ((hostVehicle->getDeparture() - time) <= 3600) {
                                 // Only has one hour left in datacenter, migrate anyway to random vehicle
                                 migrationVehicle = dcController->getRandomVehicle(true);
                                 hostVehicle->setMigrationTarget(migrationVehicle);
                                 hostVehicle->setMigrate(true);
                                 this->isMigrating = true;
+
+                                // Debug
+                                this->ac = acPoint;
+                                this->vehicle = hostVehicle;
                             }
                         } else {
                             // Suitable candidate found
-                            //std::cout << "Suitable candidate found\n";
                             hostVehicle->setMigrationTarget(migrationVehicle);
                             hostVehicle->setMigrate(true);
                             this->isMigrating = true;
+
+                            // Debug
+                            this->ac = acPoint;
+                            this->vehicle = hostVehicle;
                         }
                     }
                 }
@@ -125,11 +138,10 @@ void SubJob::work(DatacenterController* dcController, AccessPoint* acPoint, Vehi
             // Input downloaded
             if (hostVehicle->isMigrating()) {
                 // Migrating
-                //std::cout << "Migrating!\n";
                 acPoint->addToBandwidthQueue(hostVehicle);
                 if (hostVehicle == acPoint->getBandwidthUser()) {
                     // Host vehicle able to use network
-                    hostVehicle->migrate();
+                    hostVehicle->migrate(acPoint);
                 }
             } else {
                 if (workComplete) {
@@ -255,4 +267,46 @@ void SubJob::setMigrating(bool migrate) {
 
 int SubJob::getActualCompletionTime() {
     return this->actualCompletionTime;
+}
+
+void SubJob::setCurrMigrated(int migrated) {
+    this->currMigrated = migrated;
+}
+
+int SubJob::getCurrMigrated() {
+    return this->currMigrated;
+}
+
+bool SubJob::isBandwidthUser() {
+    if (this->ac == nullptr) {
+        return false;
+    } else {
+        return (this->ac->getBandwidthUser() == this->vehicle);
+    }
+}
+
+void SubJob::printACQueue() {
+    if (this->ac != nullptr) {
+        this->ac->printQueue();
+    }
+}
+
+Vehicle* SubJob::getHost() {
+    return this->vehicle;
+}
+
+bool SubJob::waitingForAP() {
+    if (this->inputDownloaded == false || this->isMigrating == true || (this->workComplete && !this->uploaded)) {
+        if (this->ac == nullptr) {
+            return false;
+        } else {
+            if (this->ac->getBandwidthUser() == this->vehicle) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    } else {
+        return false;
+    } 
 }

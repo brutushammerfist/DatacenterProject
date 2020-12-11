@@ -3,3 +3,6 @@ Time? Should I be using a timestep to simulate the passage of time or be using r
 Shift management! Decided to break vehicles into shifts, according to their ID.
 
 Overcomplicating the network...had to scrap original and restart.
+
+Front migration(migrating asap) has 0 completed jobs after 2 weeks. After many days/hours of troubleshooting and debugging, I've come to the conclusion that the network strain makes this solution not viable.
+
