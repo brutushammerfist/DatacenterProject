@@ -11,7 +11,6 @@ RegionController::RegionController() {
 }
 
 // Default Destructor
-
 RegionController::~RegionController() {
 
 }

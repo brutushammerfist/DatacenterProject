@@ -15,7 +15,7 @@ class VirtualMachine {
     public:
         VirtualMachine();
         ~VirtualMachine();
-        VirtualMachine(SubJob* job);
+        explicit VirtualMachine(SubJob* job);
 
         void work(DatacenterController* dcController, AccessPoint* acPoint, Vehicle* hostVehicle, int time, int migrationType);
 

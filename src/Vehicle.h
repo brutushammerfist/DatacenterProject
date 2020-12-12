@@ -27,7 +27,7 @@ class Vehicle {
         Vehicle* migrationTarget;
     public:
         Vehicle();
-        Vehicle(int id);
+        explicit Vehicle(int id);
         ~Vehicle();
 
         void display();

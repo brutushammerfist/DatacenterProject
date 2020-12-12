@@ -19,7 +19,7 @@ class DatacenterController {
     public:
         DatacenterController();
         ~DatacenterController();
-        DatacenterController(int numReducers);
+        explicit DatacenterController(int numReducers);
 
         bool isFull();
 

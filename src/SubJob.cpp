@@ -26,6 +26,12 @@ SubJob::SubJob() {
     this->intermediateTargetTwo = nullptr;
     this->intermediateTwoTransfered = false;
     this->currTransferTwo = 0;
+
+    this->currMigrated = 0;
+    this->isMigrating = false;
+    this->inputSize = 0;
+    this->ac = nullptr;
+    this->vehicle = nullptr;
 }
 
 SubJob::SubJob(MapReduceJob* mainJob, int estimated, bool map, int inputSize) {
@@ -121,8 +127,9 @@ void SubJob::work(DatacenterController* dcController, AccessPoint* acPoint, Vehi
                 if (jobRuntime > timeToDeparture) {
                     // Job runtime is greater than departure time, meaning vehicle leaves before job finishes
                     int jobMigrationTime = (acPoint->etaQueueEmpty() + (int)(hostVehicle->getMigrateSize() / 54) + 1);
-                    if (jobMigrationTime == (hostVehicle->getDeparture() - time + 1)) {
-                        // Job migration time == departure time + 1
+                    if (jobMigrationTime == (hostVehicle->getDeparture() - time) + 2) {
+                        // Job migration time == departure time + 2
+                        
                         Vehicle* migrationVehicle = dcController->findMigrationMatch(this->workingTimeToCompletion, this->mainJob->getIntermediateSize(), time);
                         
                         if (migrationVehicle == nullptr) {

@@ -1,2 +1,5 @@
-datacenter.exe
+src/datacenter.exe
 .vscode/*
+src/no-migration.csv
+src/front-migration.csv
+src/back-migration.csv

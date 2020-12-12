@@ -7,8 +7,11 @@ Vehicle::Vehicle() {
     this->id = -1;
     this->isBusy = false;
     this->vm = nullptr;
-    this->migrating = false;
+    this->arrival = 0;
+    this->departure = 0;
     this->currMigrated = 0;
+    this->migrating = false;
+    this->migrationTarget = nullptr;
 }
 
 // Constructor with ID as parameter

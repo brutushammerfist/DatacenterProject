@@ -185,7 +185,7 @@ void DatacenterController::writeStatsToCSV(std::string filename) {
     std::list<Stats> stats = this->jobManager->gatherJobStats();
     std::list<Stats>::iterator sitr = stats.begin();
 
-    outfile << "Job ID, Completion Time, Times Migrated, Times Restarted" << std::endl;
+    outfile << "Job ID,Completion Time,Times Migrated,Times Restarted" << std::endl;
 
     while (sitr != stats.end()) {
         outfile << (*sitr).id << "," << (*sitr).completionTime << "," << (*sitr).timesMigrated << "," << (*sitr).timesRestarted << std::endl;

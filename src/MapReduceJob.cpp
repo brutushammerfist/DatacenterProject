@@ -92,17 +92,12 @@ void MapReduceJob::checkComplete() {
 }
 
 void MapReduceJob::printStatus() {
-    bool pause = false;
     std::cout << "+------------------------------------+" << std::endl;
     std::cout << this->mapJob->migrating() << " | " << this->mapJob->timeToCompletion() << " | " << this->mapJob->assigned() << " | " << this->mapJob->getActualCompletionTime() << " | " << this->mapJob->getCurrMigrated() << " | " << this->mapJob->isBandwidthUser() << " | " << this->mapJob->waitingForAP() << std::endl;
 
     this->mapJob->printACQueue();
 
     std::cout << this->mapJob->getHost() << std::endl;
-    
-    if (this->mapJob->migrating() ) {
-        pause = true;
-    }
 
     std::cout << "--------------------------------------" << std::endl;
 
@@ -113,18 +108,10 @@ void MapReduceJob::printStatus() {
 
         (*jitr)->printACQueue();
         
-        if ((*jitr)->migrating()) {
-            pause = true;
-        }
         jitr++;
     }
 
     std::cout << "+------------------------------------+" << std::endl;
-
-    /*if (pause) {
-        int temp = 0;
-        std::cin >> temp;
-    }*/
 }
 
 int MapReduceJob::getID() {

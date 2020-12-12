@@ -24,7 +24,7 @@ class JobManager {
         int nextID;
     public:
         JobManager();
-        JobManager(int numReducers);
+        explicit JobManager(int numReducers);
         ~JobManager();
 
         MapReduceJob* newJob();

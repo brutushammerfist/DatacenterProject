@@ -5,4 +5,7 @@ Shift management! Decided to break vehicles into shifts, according to their ID.
 Overcomplicating the network...had to scrap original and restart.
 
 Front migration(migrating asap) has 0 completed jobs after 2 weeks. After many days/hours of troubleshooting and debugging, I've come to the conclusion that the network strain makes this solution not viable.
+Gather queue size as part of statistics to prove or disprove this.
+This was wrong, you just can't math, Matt.
 
+How many simultaneous jobs? Take number of desired reducers and find number of jobs that only uses up to 80% of the datacenter to allow vehicles that aren't busy to migrate to

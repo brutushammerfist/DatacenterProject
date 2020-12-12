@@ -33,7 +33,7 @@ void AccessPoint::initializeParkingLot(std::list<Vehicle*> &vehicles) {
 
     for (int i = 0; i < 40; i++) {
         while (this->cluster[i] == nullptr) {
-            if ((*vitr)->getShift() >= 0 and (*vitr)->getShift() < 8) {
+            if ((*vitr)->getShift() >= 0 && (*vitr)->getShift() < 8) {
                 this->cluster[i] = (*vitr);
                 vitr = vehicles.erase(vitr);
                 this->cluster[i]->setDeparture(3600 * (this->cluster[i]->getShift() + 1));
