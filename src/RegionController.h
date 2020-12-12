@@ -17,7 +17,7 @@ class RegionController {
 
         void initializeParkingLot(std::list<Vehicle*> &vehicles);
 
-        void fillVehicles(int shiftToReplace, std::list<Vehicle*> &vehicles);
+        void fillVehicles(int shiftToReplace, std::list<Vehicle*> &vehicles, int time);
 
         void display();
 

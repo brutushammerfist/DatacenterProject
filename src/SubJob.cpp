@@ -92,6 +92,7 @@ void SubJob::work(DatacenterController* dcController, AccessPoint* acPoint, Vehi
                                 hostVehicle->setMigrationTarget(migrationVehicle);
                                 hostVehicle->setMigrate(true);
                                 this->isMigrating = true;
+                                this->mainJob->incrementMigrate();
 
                                 // Debug
                                 this->ac = acPoint;
@@ -102,6 +103,7 @@ void SubJob::work(DatacenterController* dcController, AccessPoint* acPoint, Vehi
                             hostVehicle->setMigrationTarget(migrationVehicle);
                             hostVehicle->setMigrate(true);
                             this->isMigrating = true;
+                            this->mainJob->incrementMigrate();
 
                             // Debug
                             this->ac = acPoint;
@@ -113,11 +115,14 @@ void SubJob::work(DatacenterController* dcController, AccessPoint* acPoint, Vehi
         } else if (migrationType == 2) {
             // Migrate Last Minute
             if (!hostVehicle->isMigrating()) {
-                if (((acPoint->etaQueueEmpty() + this->workingTimeToCompletion + (int)(this->mainJob->getIntermediateSize() / 54) + 1) > (hostVehicle->getDeparture() - time + 1))) {
+                // If job is not already migrating
+                int jobRuntime = (acPoint->etaQueueEmpty() + this->workingTimeToCompletion + (int)(this->getUploadSize() / 54) + 1);
+                int timeToDeparture = (hostVehicle->getDeparture() - time) + 1;
+                if (jobRuntime > timeToDeparture) {
                     // Job runtime is greater than departure time, meaning vehicle leaves before job finishes
-                    
-                    if (((int)(hostVehicle->getMigrateSize() / 54) + 1) == (hostVehicle->getDeparture() - time - 1)) {
-                        // Job migration time == departure time - 1
+                    int jobMigrationTime = (acPoint->etaQueueEmpty() + (int)(hostVehicle->getMigrateSize() / 54) + 1);
+                    if (jobMigrationTime == (hostVehicle->getDeparture() - time + 1)) {
+                        // Job migration time == departure time + 1
                         Vehicle* migrationVehicle = dcController->findMigrationMatch(this->workingTimeToCompletion, this->mainJob->getIntermediateSize(), time);
                         
                         if (migrationVehicle == nullptr) {
@@ -243,6 +248,7 @@ void SubJob::restart() {
     this->intermediateTwoTransfered = false;
     this->currTransferOne = 0;
     this->currTransferTwo = 0;
+    this->mainJob->incrementRestart();
 }
 
 bool SubJob::assigned() {
@@ -309,4 +315,20 @@ bool SubJob::waitingForAP() {
     } else {
         return false;
     } 
+}
+
+void SubJob::incrementMigrate() {
+    this->mainJob->incrementMigrate();
+}
+
+int SubJob::getUploadSize() {
+    if (this->map) {
+        if (this->intermediateOneTransfered) {
+            return this->mainJob->getIntermediateSize();
+        }
+
+        return (this->mainJob->getIntermediateSize() * 2);
+    } else {
+        return this->mainJob->getIntermediateSize();
+    }
 }

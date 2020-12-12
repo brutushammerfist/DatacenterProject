@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <random>
 #include <ctime>
 
@@ -65,10 +66,10 @@ void DatacenterController::initializeParkingLot() {
 }
 
 // Fill any empty parking spots with vehicles
-void DatacenterController::fillVehicles() {
+void DatacenterController::fillVehicles(int time) {
     for(int i = 0; i < 4; i++) {
         if (!this->regions[i]->isFull()) {
-            this->regions[i]->fillVehicles(this->shiftToReplace, this->vehicles);
+            this->regions[i]->fillVehicles(this->shiftToReplace, this->vehicles, time);
         }
     }
 }
@@ -86,7 +87,7 @@ void DatacenterController::shiftChange(int time) {
         this->regions[i]->shiftChange(this->shiftToReplace, this->vehicles, time);
     }
 
-    this->fillVehicles();
+    this->fillVehicles(time);
     
     if (this->shiftToReplace == 23) {
         this->shiftToReplace = 0;
@@ -136,6 +137,8 @@ void DatacenterController::initializeJobs() {
         job->getMapJob()->setAssigned(true);
         this->getRandomVehicle(true)->setJob(job->getMapJob());
     }
+
+    //delete(job);
 }
 
 void DatacenterController::checkJobs() {
@@ -145,6 +148,7 @@ void DatacenterController::checkJobs() {
         MapReduceJob* job = this->jobManager->newJob();
         job->getMapJob()->setAssigned(true);
         this->getRandomVehicle(true)->setJob(job->getMapJob());
+        //delete(job);
     }
 }
 
@@ -172,4 +176,21 @@ Vehicle* DatacenterController::findMigrationMatch(int timeUntilCompletion, int d
 
 void DatacenterController::displayRunningJobStatus() {
     this->jobManager->displayRunningJobStatus();
+}
+
+void DatacenterController::writeStatsToCSV(std::string filename) {
+    std::ofstream outfile;
+    outfile.open(filename);
+    
+    std::list<Stats> stats = this->jobManager->gatherJobStats();
+    std::list<Stats>::iterator sitr = stats.begin();
+
+    outfile << "Job ID, Completion Time, Times Migrated, Times Restarted" << std::endl;
+
+    while (sitr != stats.end()) {
+        outfile << (*sitr).id << "," << (*sitr).completionTime << "," << (*sitr).timesMigrated << "," << (*sitr).timesRestarted << std::endl;
+        sitr++;
+    }
+
+    outfile.close();
 }

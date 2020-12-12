@@ -32,10 +32,10 @@ void RegionController::initializeParkingLot(std::list<Vehicle*> &vehicles) {
     }
 }
 
-void RegionController::fillVehicles(int shiftToReplace, std::list<Vehicle*> &vehicles) {
+void RegionController::fillVehicles(int shiftToReplace, std::list<Vehicle*> &vehicles, int time) {
     for(int i = 0; i < 4; i++) {
         if (!this->groups[i]->isFull()) {
-            this->groups[i]->fillVehicles(shiftToReplace, vehicles);
+            this->groups[i]->fillVehicles(shiftToReplace, vehicles, time);
         }
     }
 }

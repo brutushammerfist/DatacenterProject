@@ -14,6 +14,11 @@ MapReduceJob::MapReduceJob() {
     this->inputSize = 500;
     this->estimatedCompletionTime = completionTimeDistribution(this->generator);
     this->intermediateDataSize = intermediateDataSizeDistribution(this->generator);
+    this->isComplete = false;
+    this->numSubJobs = 0;
+    this->mapJob = nullptr;
+    this->timesSubJobsMigrated = 0;
+    this->timesSubJobsRestarted = 0;
 }
 
 MapReduceJob::MapReduceJob(int id, int numReducers) {
@@ -33,6 +38,9 @@ MapReduceJob::MapReduceJob(int id, int numReducers) {
         this->reduceJobs.push_back(new SubJob(this, (int)(this->estimatedCompletionTime / 2) + 1, false, this->intermediateDataSize));
         this->uploadedResults.push_back(0);
     }
+
+    this->timesSubJobsMigrated = 0;
+    this->timesSubJobsRestarted = 0;
 }
 
 // Default Destructor
@@ -117,4 +125,43 @@ void MapReduceJob::printStatus() {
         int temp = 0;
         std::cin >> temp;
     }*/
+}
+
+int MapReduceJob::getID() {
+    return this->id;
+}
+
+int MapReduceJob::getCompletionTime() {
+    SubJob* longestReduce = this->reduceJobs.front();
+
+    std::list<SubJob*>::iterator jitr = this->reduceJobs.begin();
+
+    while (jitr != this->reduceJobs.end()) {
+        if ((*jitr)->getActualCompletionTime() > longestReduce->getActualCompletionTime()) {
+            longestReduce = (*jitr);
+        }
+        jitr++;
+    }
+
+    int totalCompletionTime = this->mapJob->getActualCompletionTime() + longestReduce->getActualCompletionTime();
+
+    delete(longestReduce);
+
+    return totalCompletionTime;
+}
+
+void MapReduceJob::incrementMigrate() {
+    this->timesSubJobsMigrated++;
+}
+
+void MapReduceJob::incrementRestart() {
+    this->timesSubJobsRestarted++;
+}
+
+int MapReduceJob::getTimesMigrated() {
+    return this->timesSubJobsMigrated;
+}
+
+int MapReduceJob::getTimesRestarted() {
+    return this->timesSubJobsRestarted;
 }

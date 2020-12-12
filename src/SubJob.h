@@ -74,4 +74,8 @@ class SubJob {
         Vehicle* getHost();
 
         bool waitingForAP();
+
+        void incrementMigrate();
+
+        int getUploadSize();
 };

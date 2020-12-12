@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+#include <string>
 
 #include "JobManager.h"
 #include "RegionController.h"
@@ -24,7 +25,7 @@ class DatacenterController {
 
         void initializeParkingLot();
 
-        void fillVehicles();
+        void fillVehicles(int time);
 
         void display();
 
@@ -47,4 +48,6 @@ class DatacenterController {
         Vehicle* findMigrationMatch(int timeUntilCompletion, int dataSize, int currTime);
 
         void displayRunningJobStatus();
+
+        void writeStatsToCSV(std::string filename);
 };

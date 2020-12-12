@@ -1,5 +1,6 @@
 #include <iostream>
 #include <list>
+#include <string>
 
 #include "DatacenterController.h"
 
@@ -21,7 +22,7 @@ int main(int argc, char** argv) {
     while (time < endTime) {
         time += 1;
 
-        dcController.work(time, 0);
+        dcController.work(time, atoi(argv[3]));
         
         if (time % 3600 == 0) {
             dcController.shiftChange(time);
@@ -48,12 +49,49 @@ int main(int argc, char** argv) {
             dcController.checkJobs();
         }
 
+        //std::string filename = "data" + std::to_string(i) + ".csv";
+        std::string filename = "";
+
+        switch (i) {
+            case 0:
+                filename = "no-migration.csv";
+                break;
+            case 1:
+                filename = "front-migration.csv";
+                break;
+            case 2:
+                filename = "back-migration.csv";
+                break;
+            default:
+                break;
+        }
+
+        dcController.writeStatsToCSV(filename);
+
         std::cout << "Simulation complete!\n";
         std::cout << dcController.numCompletedJobs() << " jobs have been completed.\n";
     }
 
-    //std::cout << "Simulation complete!\n";
-    //std::cout << dcController.numCompletedJobs() << " jobs have been completed.\n";
+    /*std::string filename;
+
+    switch (atoi(argv[3])) {
+        case 0:
+            filename = "no-migration.csv";
+            break;
+        case 1:
+            filename = "front-migration.csv";
+            break;
+        case 2:
+            filename = "back-migration.csv";
+            break;
+        default:
+            break;
+    }
+
+    dcController.writeStatsToCSV(filename);
+
+    std::cout << "Simulation complete!\n";
+    std::cout << dcController.numCompletedJobs() << " jobs have been completed.\n";*/
 
     return 0;
 }

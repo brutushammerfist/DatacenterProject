@@ -16,6 +16,7 @@ JobManager::JobManager(int numReducers) {
     }
 
     this->numSimulJobs = numJobs;
+    this->nextID = 0;
 }
 
 JobManager::~JobManager() {
@@ -80,5 +81,45 @@ void JobManager::displayRunningJobStatus() {
         }
 
         jitr++;
+    }
+}
+
+std::list<Stats> JobManager::gatherJobStats() {
+    if (this->completedJobs.size() > 0) {
+        std::list<Stats> stats;
+
+        std::list<MapReduceJob*>::iterator jitr = this->completedJobs.begin();
+
+        while (jitr != this->completedJobs.end()) {
+            Stats stat;
+            stat.id = (*jitr)->getID();
+            stat.completionTime = (*jitr)->getCompletionTime();
+            stat.timesMigrated = (*jitr)->getTimesMigrated();
+            stat.timesRestarted = (*jitr)->getTimesRestarted();
+
+            stats.push_back(stat);
+
+            jitr++;
+        }
+
+        return stats;
+    } else {
+        std::list<Stats> stats;
+
+        std::list<MapReduceJob*>::iterator jitr = this->runningJobs.begin();
+
+        while (jitr != this->runningJobs.end()) {
+            Stats stat;
+            stat.id = (*jitr)->getID();
+            stat.completionTime = 0;
+            stat.timesMigrated = (*jitr)->getTimesMigrated();
+            stat.timesRestarted = (*jitr)->getTimesRestarted();
+
+            stats.push_back(stat);
+
+            jitr++;
+        }
+
+        return stats;
     }
 }

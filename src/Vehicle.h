@@ -61,4 +61,12 @@ class Vehicle {
         int getMigrateSize();
 
         void setMigrationTarget(Vehicle* target);
+
+        VirtualMachine* getVM();
+
+        int getUploadSize();
+
+        void setArrival(int time);
+
+        void setDeparture(int time);
 };

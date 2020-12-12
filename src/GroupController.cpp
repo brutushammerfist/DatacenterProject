@@ -31,10 +31,10 @@ void GroupController::initializeParkingLot(std::list<Vehicle*> &vehicles) {
     }
 }
 
-void GroupController::fillVehicles(int shiftToReplace, std::list<Vehicle*> &vehicles) {
+void GroupController::fillVehicles(int shiftToReplace, std::list<Vehicle*> &vehicles, int time) {
     for(int i = 0; i < 4; i++) {
         if (!this->accessPoints[i]->isFull()) {
-            this->accessPoints[i]->fillVehicles(shiftToReplace, vehicles);
+            this->accessPoints[i]->fillVehicles(shiftToReplace, vehicles, time);
         }
     }
 }

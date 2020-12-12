@@ -20,6 +20,9 @@ class MapReduceJob {
 
         bool isComplete;
 
+        int timesSubJobsMigrated;
+        int timesSubJobsRestarted;
+
         std::list<Vehicle*> repositories;
 
         int numSubJobs;
@@ -48,4 +51,16 @@ class MapReduceJob {
         void checkComplete();
 
         void printStatus();
+
+        int getID();
+
+        int getCompletionTime();
+
+        void incrementMigrate();
+        
+        void incrementRestart();
+
+        int getTimesMigrated();
+
+        int getTimesRestarted();
 };

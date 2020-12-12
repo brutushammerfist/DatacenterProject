@@ -84,6 +84,7 @@ void Vehicle::migrate(AccessPoint* acPoint) {
     this->vm->getJob()->setCurrMigrated(this->currMigrated);
 
     if (this->currMigrated >= migrateCap) {
+        this->vm->getJob()->incrementMigrate();
         this->migrationTarget->migrateVM(this->vm, this->savedJobs);
         this->migrating = false;
         this->vm->getJob()->setMigrating(false);
@@ -149,4 +150,20 @@ int Vehicle::getMigrateSize() {
 
 void Vehicle::setMigrationTarget(Vehicle* target) {
     this->migrationTarget = target;
+}
+
+VirtualMachine* Vehicle::getVM() {
+    return this->vm;
+}
+
+int Vehicle::getUploadSize() {
+    return this->vm->getJob()->getUploadSize();
+}
+
+void Vehicle::setArrival(int time) {
+    this->arrival = time;
+}
+
+void Vehicle::setDeparture(int time) {
+    this->departure = time;
 }

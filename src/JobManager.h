@@ -1,11 +1,19 @@
 #pragma once
 
 #include <list>
+#include <map>
 
 #include "MapReduceJob.h"
 
 class DatacenterController;
 class MapReduceJob;
+
+struct Stats {
+    int id;
+    int completionTime;
+    int timesMigrated;
+    int timesRestarted;
+};
 
 class JobManager {
     private:
@@ -30,4 +38,6 @@ class JobManager {
         int getNumCompleted();
 
         void displayRunningJobStatus();
+
+        std::list<Stats> gatherJobStats();
 };
