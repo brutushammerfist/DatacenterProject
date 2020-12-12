@@ -12,7 +12,7 @@ dfCompletionTime = pandas.DataFrame.from_dict({
 })
 
 fig = px.line(dfCompletionTime, x=dfCompletionTime.index, y=[dfNoMigration['Completion Time'], dfFrontMigration['Completion Time'], dfBackMigration['Completion Time']])
-fig.show()
+fig.write_image("CompletionTime.png")
 
 dfDict = {
     'Migrated' : [dfNoMigration['Times Migrated'].sum(), dfFrontMigration['Times Migrated'].sum(), dfBackMigration['Times Migrated'].sum()],
@@ -22,4 +22,4 @@ dfDict = {
 df = pandas.DataFrame.from_dict(dfDict)
 
 fig = px.bar(df, x=df.index, y=['Migrated', 'Restarted'], barmode='group', labels={'0':'No Migration', '1':'Front Migration', '2':'Back Migration'})
-fig.show()
+fig.write_image("MigrateRestart.png")
